@@ -6,153 +6,192 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Marcel Chatbot</title>
   <style>
-    /* Inlined from style.css */
-   @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-#chatbot-container {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  width: 320px;
-  max-height: 420px;
-  background: transparent !important;    /* Removed big white background */
-  border-radius: 16px;
-  box-shadow: none !important;           /* Removed shadow to avoid big white block */
-  font-family: 'Poppins', Arial, sans-serif;
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  transition: max-height 0.4s ease, width 0.4s ease;
-  z-index: 9999;
-  border: none !important;               /* Removed border */
-}
+    #chatbot-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 320px;
+      max-height: 420px;
+      background: transparent !important;
+      border-radius: 16px;
+      box-shadow: none !important;
+      font-family: 'Poppins', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transition: max-height 0.4s ease, width 0.4s ease;
+      z-index: 9999;
+      border: none !important;
+      box-sizing: border-box;
+    }
 
-#chatbot-container.closed {
-  max-height: 48px;
-  width: 200px;
-  border-radius: 24px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-}
+    #chatbot-container.closed {
+      max-height: 48px;
+      width: 200px;
+      border-radius: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+    }
 
-#chatbot-header {
-  background: linear-gradient(270deg, #ff6a00, #ee0979, #ff6a00, #ee0979);
-  background-size: 400% 400%;
-  color: white;
-  padding: 14px 20px;
-  cursor: pointer;
-  user-select: none;
-  font-weight: 600;
-  font-size: 1.2em;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
-  transition: background-position 3s ease;
-}
+    #chatbot-header {
+      background: linear-gradient(270deg, #ff6a00, #ee0979, #ff6a00, #ee0979);
+      background-size: 400% 400%;
+      color: white;
+      padding: 14px 20px;
+      cursor: pointer;
+      user-select: none;
+      font-weight: 600;
+      font-size: 1.2em;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 16px 16px 0 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+      transition: background-position 3s ease;
+    }
 
-#chatbot-header:hover {
-  animation: gradientShift 6s ease infinite;
-}
+    #chatbot-header:hover {
+      animation: gradientShift 6s ease infinite;
+    }
 
-#chatbot-header:active {
-  animation-play-state: paused;
-  background-position: 100% 0;
-}
+    #chatbot-header:active {
+      animation-play-state: paused;
+      background-position: 100% 0;
+    }
 
-@keyframes gradientShift {
-  0% {background-position: 0% 50%;}
-  50% {background-position: 100% 50%;}
-  100% {background-position: 0% 50%;}
-}
+    @keyframes gradientShift {
+      0% {background-position: 0% 50%;}
+      50% {background-position: 100% 50%;}
+      100% {background-position: 0% 50%;}
+    }
 
-#toggle-icon {
-  font-weight: 700;
-  font-size: 1.5em;
-  line-height: 1;
-  user-select: none;
-  transition: transform 0.3s ease;
-}
+    #toggle-icon {
+      font-weight: 700;
+      font-size: 1.5em;
+      line-height: 1;
+      user-select: none;
+      transition: transform 0.3s ease;
+    }
 
-#chatbot-container:not(.closed) #toggle-icon {
-  transform: rotate(45deg);
-}
+    #chatbot-container:not(.closed) #toggle-icon {
+      transform: rotate(45deg);
+    }
 
-#chatbot-container.closed #chatbot-body {
-  display: none;
-}
+    #chatbot-container.closed #chatbot-body {
+      display: none;
+    }
 
-#chatbot-body {
-  padding: 18px 20px;
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  background: #fafafa;   /* Light subtle background for chat area */
-  height: 360px;
-}
+    #chatbot-body {
+      padding: 18px 20px;
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      background: #fafafa;
+      height: 360px;
+      box-sizing: border-box;
+    }
 
-#user-input {
-  width: 100%;
-  resize: none;
-  height: 60px;
-  padding: 12px 14px;
-  font-size: 1em;
-  border-radius: 10px;
-  border: 1.8px solid #ddd;
-  box-sizing: border-box;
-  font-family: 'Poppins', Arial, sans-serif;
-  margin: 0;
-}
+    #chat-messages {
+      flex-grow: 1;
+      overflow-y: auto;
+      max-height: 220px;
+      padding: 16px 20px 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
+      box-sizing: border-box;
+    }
 
-button {
-  background: linear-gradient(90deg, #ee0979, #ff6a00);
-  color: white;
-  border: none;
-  border-radius: 12px;
-  padding: 12px;
-  cursor: pointer;
-  font-size: 1.1em;
-  font-weight: 600;
-  transition: background-position 0.5s ease;
-  background-size: 200% 100%;
-  margin-top: 8px;
-}
+    .message {
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 75%;
+      word-wrap: break-word;
+      font-size: 0.95em;
+    }
 
-button:hover {
-  background-position: 100% 0;
-}
+    .message.user {
+      align-self: flex-end;
+      background: #C0C0C0;
+      color: #000;
+    }
 
-#chat-messages {
-  flex-grow: 1;
-  overflow-y: auto;
-  max-height: 220px;
-  padding: 16px 20px 0 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-bottom: 14px;
-}
+    .message.bot {
+      align-self: flex-start;
+      background: #eeeeee;
+      color: #333;
+    }
 
-.message {
-  padding: 10px 14px;
-  border-radius: 12px;
-  max-width: 75%;
-  word-wrap: break-word;
-  font-size: 0.95em;
-}
+    /* New wrapper around textarea and button */
+    #input-area {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      /* Keep the input area always visible */
+      flex-shrink: 0;
+      box-sizing: border-box;
+    }
 
-.message.user {
-  align-self: flex-end;
-  background: #C0C0C0;
-  color: #000;
-}
+    #user-input {
+      width: 100%;
+      resize: none;
+      height: 60px;
+      padding: 12px 14px;
+      font-size: 1em;
+      border-radius: 10px;
+      border: 1.8px solid #ddd;
+      box-sizing: border-box;
+      font-family: 'Poppins', Arial, sans-serif;
+      margin: 0;
+      /* Prevent height change */
+      overflow-y: auto;
+    }
 
-.message.bot {
-  align-self: flex-start;
-  background: #eeeeee;
-  color: #333;
-}
+    button {
+      background: linear-gradient(90deg, #ee0979, #ff6a00);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 12px;
+      cursor: pointer;
+      font-size: 1.1em;
+      font-weight: 600;
+      transition: background-position 0.5s ease;
+      background-size: 200% 100%;
 
+      position: relative;
+      user-select: none;
+      outline: none;
+      box-shadow: none;
+
+      /* Fix size, prevent movement */
+      margin: 0 !important;
+      width: 100%;
+      box-sizing: border-box;
+      line-height: normal;
+      /* Prevent button shift on focus or active */
+      transform: none !important;
+      top: 0 !important;
+      left: 0 !important;
+    }
+
+    button:hover {
+      background-position: 100% 0;
+    }
+
+    button:focus,
+    button:active {
+      outline: none !important;
+      /* Keep padding and margin stable */
+      margin: 0 !important;
+      padding: 12px !important;
+      box-shadow: none !important;
+      user-select: none !important;
+      transform: none !important;
+      top: 0 !important;
+      left: 0 !important;
     }
   </style>
 </head>
@@ -164,9 +203,17 @@ button:hover {
     </div>
 
     <div id="chatbot-body">
-      <div id="chat-messages"></div>
-      <textarea id="user-input" placeholder="Ask anything?"></textarea>
-      <button onclick="sendMessage()">Send</button>
+      <div id="chat-messages">
+        <div class="message bot">
+          <strong>Marcel:</strong> Hey, this is your AI virtual chatbot assistant Mert, so I'm here to help you.
+        </div>
+      </div>
+
+      <!-- Wrap textarea and button in a fixed input area -->
+      <div id="input-area">
+        <textarea id="user-input" placeholder="Ask anything?"></textarea>
+        <button onclick="sendMessage()">Send</button>
+      </div>
     </div>
   </div>
 
