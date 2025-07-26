@@ -12,6 +12,6 @@
   iframe.style.border = "none";
   iframe.style.borderRadius = "18px";
   iframe.style.zIndex = "99999";
-  iframe.style.boxShadow = "0 10px 25px rgba(0,0,0,0.2)";
+  iframe.style.boxShadow = "0 10px 25px rgba(0,0,0,0.0)";
   document.body.appendChild(iframe);
 })();
